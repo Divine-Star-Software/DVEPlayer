@@ -23,7 +23,7 @@ async function SetUpPlayerData(DVEN: DivineVoxelEngineNexus) {
   PlayerManager.stats = new PlayerStatsData(playeStatsDataSAB, statsRemoteData);
   let renderReady = false;
   let worldReady = false;
-  DVEN.parentComm.listenForMessage("request-player-tags", (data) => {
+  DVEN.parentComm.listenForMessage("request-player-tags", (data:any) => {
     DVEN.parentComm.sendMessage("connect-player-tags", [
       playePhysicsrDataSAB,
       physicsRemoteData,
@@ -32,7 +32,7 @@ async function SetUpPlayerData(DVEN: DivineVoxelEngineNexus) {
     ]);
     renderReady = true;
   });
-  DVEN.worldComm.listenForMessage("request-player-tags", (data) => {
+  DVEN.worldComm.listenForMessage("request-player-tags", (data:any) => {
     DVEN.worldComm.sendMessage("connect-player-tags", [
       playePhysicsrDataSAB,
       physicsRemoteData,

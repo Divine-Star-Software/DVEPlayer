@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "@babylonjs/core": "^5.47.1",
-    "divine-binary-tags": "^0.0.6",
-    "divine-voxel-engine": "^1.2.53",
-    "dve-plugins-physics": "^0.0.1"
+    "divine-binary-tags": "^0.0.61",
+    "divine-voxel-engine": "^1.2.56",
+    "dve-plugins-physics": "^0.0.2"
   }
 }

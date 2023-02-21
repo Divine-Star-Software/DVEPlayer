@@ -5,7 +5,7 @@ import { WorldPlayer } from "./WorldPlayer.js";
 
 async function SetUpPlayerData(DVEW: DivineVoxelEngineWorld) {
     let playerDataReady = false;
-    DVEW.nexusComm.listenForMessage("connect-player-tags", (data) => {
+    DVEW.nexusComm.listenForMessage("connect-player-tags", (data:any) => {
       PlayerManager.physics = new PlayerPhysicsData(data[1], data[2]);
       playerDataReady = true;
     });
