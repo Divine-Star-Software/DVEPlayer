@@ -1,0 +1,26 @@
+{
+  "name": "dve-plugins-player-dev",
+  "version": "0.0.0",
+  "description": "A player addon for DVE.",
+  "type": "module",
+  "main": "out/index.js",
+  "types": "out/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "url": "https://github.com/Divine-Star-Software/DVEPlayer"
+  },
+  "homepage": "https://github.com/Divine-Star-Software/DVEPlayer",
+  "author": "Divine Star Software",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.7.15"
+  },
+  "dependencies": {
+    "@babylonjs/core": "^5.47.1",
+    "divine-binary-tags": "^0.0.6",
+    "divine-voxel-engine": "^1.2.53",
+    "dve-plugins-physics": "^0.0.1"
+  }
+}
