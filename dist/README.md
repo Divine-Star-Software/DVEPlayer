@@ -17,7 +17,9 @@ import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder.js";
 import { EdgesRenderer } from "@babylonjs/core/Rendering/edgesRenderer.js";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial.js";
 import { INIT_RENDER_PLAYER } from "dve-plugins-player/Render/";
-import { DVEN } from "divine-voxel-engine/Render";
+import { DVER } from "divine-voxel-engine/Render";
+//init DVER beforehand
+
 const player = await INIT_RENDER_PLAYER(
   scene,
   camera,
