@@ -1,24 +1,34 @@
-import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { ControlManager } from "../Controls/ControlManager.js";
 import { PlayerManager } from "../Data/PlayerManager.js";
 import { PlayerPhysicsStatesValues } from "../Data/PlayerPhysicsData.js";
-export const RenderPlayer = {
-    settings: {
+import { DVEPBabylonSystem } from "./System/Babylon.js";
+export class RenderPlayer {
+    manager;
+    nodes;
+    settings = {
         doWalkEffect: true,
-    },
-    maanger: PlayerManager,
-    nodes: {},
-    direction: new Vector3(0, 0, 0),
-    sideDirection: new Vector3(0, 0, 0),
-    xzd: new Vector3(0, 0, 0),
-    cameraRotation: new Vector3(0, 0, 0),
-    $INIT(nodes) {
+    };
+    maanger;
+    controls = new ControlManager();
+    __Vec3;
+    direction;
+    sideDirection;
+    xzd;
+    cameraRotation;
+    constructor(manager, nodes) {
+        this.manager = manager;
         this.nodes = nodes;
-    },
+        this.__Vec3 = DVEPBabylonSystem.DVERSystem.Vector3;
+        this.direction = new DVEPBabylonSystem.DVERSystem.Vector3();
+        this.sideDirection = new DVEPBabylonSystem.DVERSystem.Vector3();
+        this.xzd = new DVEPBabylonSystem.DVERSystem.Vector3();
+        this.cameraRotation = new DVEPBabylonSystem.DVERSystem.Vector3();
+    }
     render() {
         //update physics data
         const camera = this.nodes.camera;
-        camera.getDirectionToRef(Vector3.Forward(), this.direction);
-        camera.getDirectionToRef(Vector3.Left(), this.sideDirection);
+        camera.getDirectionToRef(this.__Vec3.Forward(), this.direction);
+        camera.getDirectionToRef(this.__Vec3.Left(), this.sideDirection);
         PlayerManager.physics.direction.set(this.direction.x, this.direction.y, this.direction.z);
         PlayerManager.physics.sideDirection.set(this.sideDirection.x, this.sideDirection.y, this.sideDirection.z);
         const rotation = camera.rotation;
@@ -42,7 +52,7 @@ export const RenderPlayer = {
             else {
                 this.cameraRotation.scaleInPlace(0.5);
             }
-            this.nodes.camNode.rotation = Vector3.Lerp(this.cameraRotation, this.nodes.camNode.rotation, 0.25);
+            this.nodes.camNode.rotation = this.__Vec3.Lerp(this.cameraRotation, this.nodes.camNode.rotation, 0.25);
         }
-    },
-};
+    }
+}

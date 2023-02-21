@@ -1,9 +1,12 @@
+import type { CollisionData } from "dve-plugins-physics/Types/";
 
-import { EntityBase } from "dve-plugins-physics/Nexus";
-import { Vector3 } from "divine-voxel-engine/Math";
+import { EntityBase } from "dve-plugins-physics/Nexus/index.js";
+import { Vector3 } from "divine-voxel-engine/Math/index.js";
 
-import { CollisionData } from "dve-plugins-physics/Types/";
-import { PlayerPhysicsData, PlayerPhysicsStatesValues } from "../Data/PlayerPhysicsData.js";
+import {
+  PlayerPhysicsData,
+  PlayerPhysicsStatesValues,
+} from "../Data/PlayerPhysicsData.js";
 import { PlayerStatsData } from "../Data/PlayerStatsData.js";
 
 export class NexusPlayer extends EntityBase {

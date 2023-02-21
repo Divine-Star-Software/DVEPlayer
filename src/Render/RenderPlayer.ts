@@ -1,9 +1,13 @@
-import { Vector3 } from "@babylonjs/core/Maths/math.vector";
-import { Mesh } from "@babylonjs/core/Meshes/mesh";
-import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera";
-import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
+import type { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
+import type { Mesh } from "@babylonjs/core/Meshes/mesh.js";
+import type { Scene } from "@babylonjs/core/scene";
+import { ControlManager } from "../Controls/ControlManager.js";
+
+import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera.js";
+import { TransformNode } from "@babylonjs/core/Meshes/transformNode.js";
 import { PlayerManager } from "../Data/PlayerManager.js";
 import { PlayerPhysicsStatesValues } from "../Data/PlayerPhysicsData.js";
+import { DVEPBabylonSystem } from "./System/Babylon.js";
 
 /*
 PLAYER 
@@ -13,27 +17,37 @@ type PlayerRenderNodes = {
   model: Mesh;
   camera: UniversalCamera;
   camNode: TransformNode;
+  scene: Scene;
 };
-export const RenderPlayer = {
-  settings: {
+export class RenderPlayer {
+  settings = {
     doWalkEffect: true,
-  },
-  maanger: PlayerManager,
-  nodes: <PlayerRenderNodes>{},
-  direction: new Vector3(0, 0, 0),
-  sideDirection: new Vector3(0, 0, 0),
-  xzd: new Vector3(0, 0, 0),
-  cameraRotation: new Vector3(0, 0, 0),
+  };
+  maanger: typeof PlayerManager;
+  controls = new ControlManager();
 
-  $INIT(nodes: PlayerRenderNodes) {
-    this.nodes = nodes;
-  },
+  __Vec3: typeof Vector3;
+  direction: Vector3;
+  sideDirection: Vector3;
+  xzd: Vector3;
+  cameraRotation: Vector3;
+
+  constructor(
+    public manager: typeof PlayerManager,
+    public nodes: PlayerRenderNodes
+  ) {
+    this.__Vec3 = DVEPBabylonSystem.DVERSystem.Vector3;
+    this.direction = new DVEPBabylonSystem.DVERSystem.Vector3();
+    this.sideDirection = new DVEPBabylonSystem.DVERSystem.Vector3();
+    this.xzd = new DVEPBabylonSystem.DVERSystem.Vector3();
+    this.cameraRotation = new DVEPBabylonSystem.DVERSystem.Vector3();
+  }
 
   render() {
     //update physics data
     const camera = this.nodes.camera;
-    camera.getDirectionToRef(Vector3.Forward(), this.direction);
-    camera.getDirectionToRef(Vector3.Left(), this.sideDirection);
+    camera.getDirectionToRef(this.__Vec3.Forward(), this.direction);
+    camera.getDirectionToRef(this.__Vec3.Left(), this.sideDirection);
     PlayerManager.physics.direction.set(
       this.direction.x,
       this.direction.y,
@@ -67,11 +81,11 @@ export const RenderPlayer = {
       } else {
         this.cameraRotation.scaleInPlace(0.5);
       }
-      this.nodes.camNode.rotation = Vector3.Lerp(
+      this.nodes.camNode.rotation = this.__Vec3.Lerp(
         this.cameraRotation,
         this.nodes.camNode.rotation,
         0.25
       );
     }
-  },
-};
+  }
+}

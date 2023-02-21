@@ -52,20 +52,8 @@ async function SetUpPlayerData(DVEN: DivineVoxelEngineNexus) {
   });
 }
 
-export const GetNexusPlayer = async (DVEN: DivineVoxelEngineNexus) => {
+export const INIT_NEXUS_PLAYER = async (DVEN: DivineVoxelEngineNexus) => {
   await SetUpPlayerData(DVEN);
   const player = new NexusPlayer(PlayerManager.physics, PlayerManager.stats);
-  player.setPosition(0, 200, 0);
-  DVEN.parentComm.listenForMessage("set-player-position", (data) => {
-    const [m, x, y, z] = data;
-    player.setPosition(x, y, z);
-  });
-
-  setTimeout(() => {
-    setInterval(() => {
-      player.update();
-    }, 17);
-  }, 2000);
-
   return player;
 };

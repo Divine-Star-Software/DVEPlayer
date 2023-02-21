@@ -1,55 +1,65 @@
-import { RenderPlayer } from "Render/RenderPlayer";
-import { GetPlayerPickCube } from "Render/PlayerPickCube";
+import { GetPlayerPickCube } from "../Render/PlayerPickCube.js";
+import { PlayerManager } from "../Data/PlayerManager.js";
 //  "./Contexts/DataLoader/dataloader.js",
-export function SetUpControls(DVER, camera, scene) {
-    const { cube, setPickNormals } = GetPlayerPickCube(DVER, camera, scene);
-    RenderPlayer.maanger.physics.nowIs.still();
+export function SetUpControls(DVER, player) {
+    const { cube, setPickNormals } = GetPlayerPickCube(DVER, player);
+    PlayerManager.physics.nowIs.still();
     window.addEventListener("keydown", (event) => {
         if (event.key == "w" || event.key == "W") {
-            RenderPlayer.maanger.physics.nowIs.walkingForward();
+            PlayerManager.physics.nowIs.walkingForward();
         }
         if (event.key == "s" || event.key == "S") {
-            RenderPlayer.maanger.physics.nowIs.walkingBackward();
+            PlayerManager.physics.nowIs.walkingBackward();
         }
         if (event.key == "a" || event.key == "A") {
-            RenderPlayer.maanger.physics.nowIs.walkingLeft();
+            PlayerManager.physics.nowIs.walkingLeft();
         }
         if (event.key == "d" || event.key == "D") {
-            RenderPlayer.maanger.physics.nowIs.walkingRight();
+            PlayerManager.physics.nowIs.walkingRight();
         }
         if (event.key == " ") {
-            RenderPlayer.maanger.physics.nowIs.jumping();
+            PlayerManager.physics.nowIs.jumping();
         }
         if (event.key == "Control") {
-            RenderPlayer.maanger.physics.nowIs.running();
+            PlayerManager.physics.nowIs.running();
         }
     });
     window.addEventListener("keyup", (event) => {
         if (event.key == "w" || event.key == "W") {
-            return RenderPlayer.maanger.physics.nowIs.walkingForward(false);
+            return PlayerManager.physics.nowIs.walkingForward(false);
         }
         if (event.key == "s" || event.key == "S") {
-            return RenderPlayer.maanger.physics.nowIs.walkingBackward(false);
+            return PlayerManager.physics.nowIs.walkingBackward(false);
         }
         if (event.key == "a" || event.key == "A") {
-            return RenderPlayer.maanger.physics.nowIs.walkingLeft(false);
+            return PlayerManager.physics.nowIs.walkingLeft(false);
         }
         if (event.key == "d" || event.key == "D") {
-            return RenderPlayer.maanger.physics.nowIs.walkingRight(false);
+            return PlayerManager.physics.nowIs.walkingRight(false);
         }
         if (event.key == " ") {
-            RenderPlayer.maanger.physics.nowIs.jumping(false);
+            PlayerManager.physics.nowIs.jumping(false);
         }
         if (event.key == "Control") {
-            RenderPlayer.maanger.physics.nowIs.running(false);
+            PlayerManager.physics.nowIs.running(false);
         }
     });
-    window.addEventListener("click", (event) => {
+    window.addEventListener("mouseup", (event) => {
         if (event.button == 0) {
             setPickNormals();
+            player.controls.mouse.left.up.run();
         }
         if (event.button == 2) {
-            // DVER.worldComm.sendMessage("voxel-remove");
+            player.controls.mouse.right.up.run();
+        }
+    });
+    window.addEventListener("mousedown", (event) => {
+        if (event.button == 0) {
+            setPickNormals();
+            player.controls.mouse.left.down.run();
+        }
+        if (event.button == 2) {
+            player.controls.mouse.right.down.run();
         }
     });
 }

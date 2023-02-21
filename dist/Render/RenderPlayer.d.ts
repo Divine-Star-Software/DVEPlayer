@@ -1,28 +1,30 @@
-import { Vector3 } from "@babylonjs/core/Maths/math.vector";
-import { Mesh } from "@babylonjs/core/Meshes/mesh";
-import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera";
-import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
+import type { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
+import type { Mesh } from "@babylonjs/core/Meshes/mesh.js";
+import type { Scene } from "@babylonjs/core/scene";
+import { ControlManager } from "../Controls/ControlManager.js";
+import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera.js";
+import { TransformNode } from "@babylonjs/core/Meshes/transformNode.js";
+import { PlayerManager } from "../Data/PlayerManager.js";
 declare type PlayerRenderNodes = {
     model: Mesh;
     camera: UniversalCamera;
     camNode: TransformNode;
+    scene: Scene;
 };
-export declare const RenderPlayer: {
+export declare class RenderPlayer {
+    manager: typeof PlayerManager;
+    nodes: PlayerRenderNodes;
     settings: {
         doWalkEffect: boolean;
     };
-    maanger: {
-        currentDimension: string;
-        physics: import("../Data/PlayerPhysicsData.js").PlayerPhysicsData;
-        stats: import("../Data/PlayerStatsData.js").PlayerStatsData;
-        $INIt(data: any[]): void;
-    };
-    nodes: PlayerRenderNodes;
+    maanger: typeof PlayerManager;
+    controls: ControlManager;
+    __Vec3: typeof Vector3;
     direction: Vector3;
     sideDirection: Vector3;
     xzd: Vector3;
     cameraRotation: Vector3;
-    $INIT(nodes: PlayerRenderNodes): void;
+    constructor(manager: typeof PlayerManager, nodes: PlayerRenderNodes);
     render(): void;
-};
+}
 export {};

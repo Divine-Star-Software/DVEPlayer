@@ -1,38 +1,21 @@
-import { PlayerPhysicsData } from "../Data/PlayerPhysicsData.js";
-import { DivineVoxelEngineWorld } from "divine-voxel-engine/World";
-export declare const WorldPlayer: {
-    manager: {
-        currentDimension: string;
-        physics: PlayerPhysicsData;
-        stats: import("../index.js").PlayerStatsData;
-        $INIt(data: any[]): void;
+import type { DivineVoxelEngineWorld } from "divine-voxel-engine/World/index.js";
+import type { DataTool } from "divine-voxel-engine/Tools/Data/DataTool.js";
+import type { PlayerManager } from "../Data/PlayerManager.js";
+export declare class WorldPlayer {
+    DVEW: DivineVoxelEngineWorld;
+    manager: typeof PlayerManager;
+    start: {
+        x: number;
+        y: number;
+        z: number;
     };
-    playerDataBuffer: SharedArrayBuffer;
-    data: DataView;
-    position: Float32Array;
-    onAdd: ((raw: number[], x: number, y: number, z: number) => void)[];
-    onRemove: ((x: number, y: number, z: number) => void)[];
-    onExplode: ((x: number, y: number, z: number, radius: number) => void)[];
-    onUpdate: (() => void)[];
-    dimension: string;
-    getDimension(): string;
-    update(): void;
-};
-export declare const GetWorldPlayer: (DVEW: DivineVoxelEngineWorld) => Promise<{
-    manager: {
-        currentDimension: string;
-        physics: PlayerPhysicsData;
-        stats: import("../index.js").PlayerStatsData;
-        $INIt(data: any[]): void;
+    end: {
+        x: number;
+        y: number;
+        z: number;
     };
-    playerDataBuffer: SharedArrayBuffer;
-    data: DataView;
-    position: Float32Array;
-    onAdd: ((raw: number[], x: number, y: number, z: number) => void)[];
-    onRemove: ((x: number, y: number, z: number) => void)[];
-    onExplode: ((x: number, y: number, z: number, radius: number) => void)[];
-    onUpdate: (() => void)[];
-    dimension: string;
-    getDimension(): string;
+    reachDistance: number;
+    dataTool: DataTool;
+    constructor(DVEW: DivineVoxelEngineWorld, manager: typeof PlayerManager);
     update(): void;
-}>;
+}

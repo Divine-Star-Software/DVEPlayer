@@ -1,5 +1,5 @@
-import { RemoteTagManager } from "divine-binary-tags";
-import { RemoteTagManagerInitData } from "divine-binary-tags";
+import { RemoteTagManager } from "divine-binary-tags/index.js";
+import { RemoteTagManagerInitData } from "divine-binary-tags/index.js";
 export declare const PlayerStatsTags: RemoteTagManager;
 export declare const PlayerStatsTagIDs: {
     header: string;

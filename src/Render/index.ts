@@ -1,2 +1,2 @@
 export * from "./RenderPlayer.js";
-export * from "./PlayerPickCube.js";
+export * from "./InitRenderPlayer.js";

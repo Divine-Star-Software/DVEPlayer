@@ -1,11 +1,9 @@
-import { Vector3 } from "@babylonjs/core/Maths/math.vector";
-import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
-import { MeshBuilder } from "@babylonjs/core/Meshes/meshBuilder";
 import { RenderPlayer } from "./RenderPlayer.js";
 import { PlayerManager } from "../Data/PlayerManager.js";
 import { PlayerStatsData } from "../Data/PlayerStatsData.js";
 import { PlayerPhysicsData } from "../Data/PlayerPhysicsData.js";
 import { SetUpControls } from "../Controls/SetUpControls.js";
+import { DVEPBabylonSystem } from "./System/Babylon.js";
 async function SetUpPlayerData(DVER) {
     let playerDataReady = false;
     let playerStats;
@@ -28,59 +26,36 @@ async function SetUpPlayerData(DVER) {
     //@ts-ignore
     return { playerStats };
 }
-const GetPlayerModel = (scene) => {
-    return new Promise((resolve, reject) => {
-        resolve(MeshBuilder.CreateBox("", { width: 1, height: 2 }, scene));
-        /*     SceneLoader.ImportMesh(
-          null,
-          "assets/player/",
-          "chartest.babylon",
-          scene,
-          (assets) => {
-            const mesh = assets[0];
-            const texture = new Texture("assets/player/playertexture.png");
-            texture.onLoadObservable.add(() => {
-              texture.updateSamplingMode(1);
-            });
-            const mat = new StandardMaterial("player-mat");
-            mat.backFaceCulling = false;
-            mat.diffuseTexture = texture;
-            mesh.material = mat;
-            mesh.isPickable = false;
-            resolve(mesh as any);
-          }
-        );
-     */
-    });
-};
-export async function $INIT_Player(scene, camera, DVER) {
+export async function INIT_RENDER_PLAYER(scene, camera, DVER, system, playerModel) {
+    DVEPBabylonSystem.$INIT(DVER, system);
     await SetUpPlayerData(DVER);
     PlayerManager.physics.eyeLevel = 0.7;
+    playerModel.isVisible = false;
     //move camera to player's eye level
     camera.position.y = PlayerManager.physics.eyeLevel;
     camera.inputs.removeByType("FreeCameraKeyboardMoveInput");
-    //set up model
-    const playerModel = await GetPlayerModel(scene);
-    playerModel.isVisible = false;
+    camera.minZ = .01;
     //set up camera
-    const camNode = new TransformNode("camnode", scene);
+    const camNode = new DVEPBabylonSystem.DVERSystem.TransformNode("camnode", scene);
     camera.parent = camNode;
     camNode.parent = playerModel;
     //set up floating origin
-    const oriign = new Vector3();
+    const oriign = new DVEPBabylonSystem.DVERSystem.Vector3();
     scene.onBeforeActiveMeshesEvaluationObservable.add(() => {
         oriign.x = PlayerManager.physics.position.x;
         oriign.y = PlayerManager.physics.position.y;
         oriign.z = PlayerManager.physics.position.z;
     });
     DVER.render.fo.setOriginCenter(scene, { position: oriign });
-    RenderPlayer.$INIT({
+    const renderPlayer = new RenderPlayer(PlayerManager, {
         model: playerModel,
         camNode: camNode,
         camera: camera,
+        scene: scene
     });
-    SetUpControls(DVER, camera, scene);
+    SetUpControls(DVER, renderPlayer);
     scene.registerBeforeRender(() => {
-        RenderPlayer.render();
+        renderPlayer.render();
     });
+    return renderPlayer;
 }

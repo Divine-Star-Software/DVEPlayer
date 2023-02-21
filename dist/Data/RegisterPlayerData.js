@@ -1,6 +1,6 @@
 import { TagManager } from "divine-binary-tags";
-import { PlayerPhysicsTagIDs } from "./PlayerPhysicsData";
-import { PlayerStatsTagIDs } from "./PlayerStatsData";
+import { PlayerPhysicsTagIDs } from "./PlayerPhysicsData.js";
+import { PlayerStatsTagIDs } from "./PlayerStatsData.js";
 export function $RegisterPlayerData() {
     const playerPhysicsTagManager = new TagManager("player-physics-tags");
     playerPhysicsTagManager.registerTag({

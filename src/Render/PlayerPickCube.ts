@@ -1,30 +1,27 @@
 import type { DivineVoxelEngineRender } from "divine-voxel-engine/Render";
 
-import { Scene } from "@babylonjs/core/scene";
 
-import { Vector3 } from "@babylonjs/core/Maths/math.vector";
-import { Color3, Color4 } from "@babylonjs/core/Maths/math.color";
-import { MeshBuilder } from "@babylonjs/core/Meshes/meshBuilder";
-import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera";
-import { EdgesRenderer  } from "@babylonjs/core/Rendering/edgesRenderer";
-import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
-import { PlayerManager } from "Data/PlayerManager";
-
-//  "./Contexts/DataLoader/dataloader.js",
-
+import { PlayerManager } from "../Data/PlayerManager.js";
+import { DVEPBabylonSystem } from "./System/Babylon.js";
+import { RenderPlayer } from "./RenderPlayer.js";
 
 /*
 PICK CUBE  
 */
 export const GetPlayerPickCube = (
   DVER: DivineVoxelEngineRender,
-  camera: UniversalCamera,
-  scene: Scene
+player : RenderPlayer
 ) => {
-  const cubeMaterial = new StandardMaterial("block");
-  cubeMaterial.diffuseColor = new Color3(0.2, 0.2, 0.2);
+  const cubeMaterial = new DVEPBabylonSystem.system.StandardMaterial(
+    "picker-cube"
+  );
+  cubeMaterial.diffuseColor = new DVEPBabylonSystem.DVERSystem.Color3(
+    0.2,
+    0.2,
+    0.2
+  );
   cubeMaterial.alpha = 0.3;
-  const cube = MeshBuilder.CreateBox("playerblockdisplay", {
+  const cube = DVEPBabylonSystem.system.CreateBox("playerblockdisplay", {
     size: 1.1,
   });
   cube.isPickable = true;
@@ -33,16 +30,15 @@ export const GetPlayerPickCube = (
   (cube as any).parent = DVER.render.fo.activeNode;
   cube.enableEdgesRendering();
   cube.edgesWidth = 0.3;
-  cube.edgesColor = new Color4(0, 0, 0, 0.8);
-  (cube as any).__edgeredner = EdgesRenderer;
+  cube.edgesColor.set(0, 0, 0, 0.8);
   cube.convertToFlatShadedMesh();
   cube.updateFacetData();
 
-  const cameraPickPostion = new Vector3();
+  const cameraPickPostion = new DVEPBabylonSystem.DVERSystem.Vector3();
   cameraPickPostion.y = PlayerManager.physics.eyeLevel;
   const setPickNormals = () => {
-    const camPick = scene.pickWithRay(
-      camera.getForwardRay(10, undefined, cameraPickPostion)
+    const camPick = player.nodes.scene.pickWithRay(
+      player.nodes.camera.getForwardRay(10, undefined, cameraPickPostion)
     );
     if (
       !camPick ||
@@ -57,7 +53,7 @@ export const GetPlayerPickCube = (
     PlayerManager.physics.pick.normal.z = normal.z;
   };
 
-  scene.registerBeforeRender(() => {
+  player.nodes.scene.registerBeforeRender(() => {
     cube.position.x = PlayerManager.physics.pick.position.x + 0.5;
     cube.position.y = PlayerManager.physics.pick.position.y + 0.5;
     cube.position.z = PlayerManager.physics.pick.position.z + 0.5;

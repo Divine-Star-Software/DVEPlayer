@@ -1,6 +1,6 @@
-import { EntityBase } from "dve-plugins-physics/Nexus";
-import { Vector3 } from "divine-voxel-engine/Math";
-import { PlayerPhysicsStatesValues } from "../Data/PlayerPhysicsData.js";
+import { EntityBase } from "dve-plugins-physics/Nexus/index.js";
+import { Vector3 } from "divine-voxel-engine/Math/index.js";
+import { PlayerPhysicsStatesValues, } from "../Data/PlayerPhysicsData.js";
 export class NexusPlayer extends EntityBase {
     physics;
     stats;
